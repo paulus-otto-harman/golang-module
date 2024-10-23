@@ -1,7 +1,7 @@
-package paul
+package gola
 
 import "fmt"
 
 func Logger(teks string) string {
-	return fmt.Sprintf("Paul : %s", teks)
+	return fmt.Sprintf("gola : %s", teks)
 }
