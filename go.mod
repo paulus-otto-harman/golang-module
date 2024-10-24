@@ -1,3 +1,3 @@
-module github.com/paulus-otto-harman/golang-module-test1
+module github.com/paulus-otto-harman/golang-module
 
 go 1.23.2
