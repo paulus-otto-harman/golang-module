@@ -49,11 +49,12 @@ func ToInt(data interface{}, err error) (int, error) {
 		panic("Sistem mendeteksi error. Aplikasi dihentikan.")
 	}
 
-	number, ok := data.(int)
-	if !ok {
+	if number, ok := data.(int); !ok {
 		return 0, err
+	} else {
+		return number, err
 	}
-	return number, err
+
 }
 
 func Input(params ...map[string]interface{}) (interface{}, error) {
@@ -88,7 +89,7 @@ const LightBlue = 94
 const Bold = "\033[1m%s\033[0m" // ESC[1m
 const Color = "\x1b[%dm%s\x1b[0m"
 
-func f(mode string, teks string, warna ...int) string {
+func Tf(mode string, teks string, warna ...int) string {
 	switch {
 	case mode == Bold && len(warna) > 0:
 		return fmt.Sprintf(Color, warna[0], fmt.Sprintf(Bold, teks))
