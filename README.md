@@ -1,11 +1,12 @@
 # gola (Go Lumoshive Academy)
 adalah Package untuk func-func yang sering digunakan selama pembelajaran bahasa pemrograman Go
 
-## cara download :
+## Cara download :
 ```
 go get github.com/paulus-otto-harman/golang-module
 ```
 
+## Func
 ### gola.ClearScreen()
 
 digunakan untuk membersihkan layar
