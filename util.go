@@ -1,6 +1,7 @@
 package gola
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -46,7 +47,7 @@ func ToInt(data interface{}, err error) (int, error) {
 	// TODO : validasi
 
 	if err != nil {
-		panic("Sistem mendeteksi error. Aplikasi dihentikan.")
+		panic("Error Detected. System Halted.")
 	}
 
 	if number, ok := data.(int); !ok {
@@ -58,33 +59,67 @@ func ToInt(data interface{}, err error) (int, error) {
 }
 
 func Input(params ...map[string]interface{}) (interface{}, error) {
+	label := ""
+	required := false
+
 	if len(params) > 0 {
 		if value, ok := params[0]["label"]; ok {
-			fmt.Printf("%s ", value)
+			label = fmt.Sprintf("%s ", value)
+		}
+
+		if value, ok := params[0]["required"]; ok {
+			required = value.(bool)
 		}
 
 		if value, ok := params[0]["type"]; ok {
 			if value == "number" {
 				var inputAngka int
+
+				if required {
+					for err := errors.New(""); err != nil; {
+						fmt.Print(label)
+						_, err = fmt.Scanln(&inputAngka)
+					}
+					return inputAngka, nil
+				}
+				fmt.Print(label)
 				_, err := fmt.Scanln(&inputAngka)
 				return inputAngka, err
 			}
 		}
+
 	}
 
-	// default parameters :: gunakan jika komponen ini tidak memiliki parameter sama sekali
+	// default
 	var inputTeks string
-	_, err := fmt.Scanln(&inputTeks)
-	if err != nil {
-		return nil, err
+	if required {
+		for err := errors.New(""); err != nil; {
+			fmt.Print(label)
+			_, err = fmt.Scanln(&inputTeks)
+		}
+		return inputTeks, nil
 	}
+	fmt.Print(label)
+	_, err := fmt.Scanln(&inputTeks)
 	return fmt.Sprintf("%v", inputTeks), err
 }
 
 const Red = 31
+const Green = 32
+const Yellow = 33
+const Blue = 34
+const Magenta = 35
+const Cyan = 36
+const LightGray = 37
+
+const Gray = 90
+const LightRed = 91
 const LightGreen = 92
 const LightYellow = 93
 const LightBlue = 94
+const LightMagenta = 95
+const LightCyan = 96
+const White = 97
 
 const Bold = "\033[1m%s\033[0m" // ESC[1m
 const Color = "\x1b[%dm%s\x1b[0m"
