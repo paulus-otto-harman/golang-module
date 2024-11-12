@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func StoreUploadedFile(inputName string, mandatory bool, r *http.Request) collections.FileUpload {
+func StoreUploadedFile(inputName string, mandatory bool, r *http.Request, customUploadDir ...string) collections.FileUpload {
 	if err := r.ParseMultipartForm(10 << 20); err != nil {
 		return collections.FileUpload{
 			Error: &collections.Error{
@@ -45,7 +45,25 @@ func StoreUploadedFile(inputName string, mandatory bool, r *http.Request) collec
 	defer file.Close()
 	fileExtension := fileHandler.Filename[strings.LastIndex(fileHandler.Filename, "."):]
 
-	fileRenamed := filepath.Join(config.UploadDir, uuid.New().String()+fileExtension)
+	uploadDir := config.UploadDir
+	if len(customUploadDir) > 0 {
+		uploadDir = customUploadDir[0]
+	}
+
+	err = nil
+	if uploadDirExists, _ := folderExists(uploadDir); !uploadDirExists {
+		err = os.Mkdir(uploadDir, 0777)
+	}
+
+	if err != nil {
+		return collections.FileUpload{Error: &collections.Error{
+			Default: err,
+			Code:    0,
+			Message: "Unable to create upload Folder",
+		}}
+	}
+
+	fileRenamed := filepath.Join(uploadDir, uuid.New().String()+fileExtension)
 	destination, err := os.Create(fileRenamed)
 	if err != nil {
 		return collections.FileUpload{
@@ -83,4 +101,15 @@ func StoreUploadedFile(inputName string, mandatory bool, r *http.Request) collec
 			FullUrl:      strings.Join([]string{scheme, "://", r.Host, "/", fileRenamed}, ""),
 		},
 	}
+}
+
+func folderExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
