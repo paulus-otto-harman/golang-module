@@ -3,8 +3,8 @@ package web
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/paulus-otto-harman/golang-module-web/collections"
 	"github.com/paulus-otto-harman/golang-module/config"
+	"github.com/paulus-otto-harman/golang-module/web/collections"
 	"io"
 	"net/http"
 	"os"
