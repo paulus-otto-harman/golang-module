@@ -68,13 +68,19 @@ func StoreUploadedFile(inputName string, mandatory bool, r *http.Request) collec
 		}
 	}
 
+	scheme := "https"
+	if r.TLS == nil {
+		scheme = "http"
+	}
+
 	return collections.FileUpload{
 		Error: nil,
-		UploadedFile: collections.UploadedFile{
+		Uploaded: collections.UploadedFile{
 			Path:         fileRenamed,
 			MimeType:     fileHandler.Header,
 			Size:         fileHandler.Size,
 			OriginalName: fileHandler.Filename,
+			FullUrl:      strings.Join([]string{scheme, "://", r.Host, "/", fileRenamed}, ""),
 		},
 	}
 }

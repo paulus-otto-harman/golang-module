@@ -11,11 +11,12 @@ type Error struct {
 type UploadedFile struct {
 	OriginalName string
 	Path         string
+	FullUrl      string
 	Size         int64
 	MimeType     textproto.MIMEHeader
 }
 
 type FileUpload struct {
-	Error        *Error
-	UploadedFile UploadedFile
+	Error    *Error
+	Uploaded UploadedFile
 }
