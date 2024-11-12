@@ -1,4 +1,4 @@
-package gola
+package http
 
 import (
 	"fmt"

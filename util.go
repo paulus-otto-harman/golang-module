@@ -134,7 +134,3 @@ func Tf(mode string, teks string, warna ...int) string {
 		return fmt.Sprintf(Color, warna[0], teks)
 	}
 }
-
-func Test() {
-	
-}
