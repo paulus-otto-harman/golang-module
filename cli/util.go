@@ -1,4 +1,4 @@
-package gola
+package cli
 
 import (
 	"errors"
