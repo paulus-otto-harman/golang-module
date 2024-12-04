@@ -14,12 +14,11 @@ func HTTPRequest(method string, headers http.Header, url string, load []byte) ([
 	var request *http.Request
 	var err error
 
-	if load == nil {
-		request, err = http.NewRequest(method, url, nil)
-		if err != nil {
-			return errHandle(err)
-		}
-	} else {
+	request, err = http.NewRequest(method, url, nil)
+	if err != nil {
+		return errHandle(err)
+	}
+	if load != nil {
 		request, err = http.NewRequest(method, url, bytes.NewBuffer(load))
 		if err != nil {
 			return errHandle(err)
